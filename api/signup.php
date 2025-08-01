@@ -1,8 +1,32 @@
 <?php
-  include 'connect.php';
-  if (isset($_SESSION['email'])) {
-    header('location: index.php');
-  }
+session_start();
+include 'connect.php';
+
+if (isset($_SESSION['email'])) {
+    header('Location: index.php');
+    exit;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $mobile = $_POST['mob'];
+    $pass = $_POST['pass'];
+    $gst = $_POST['gst'];
+
+    $query = "SELECT * FROM storeowner WHERE user_mail='$email'";
+    $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+    $num = mysqli_num_rows($result);
+
+    if ($num != 0) {
+        echo '<script>alert("Email Already exists")</script>';
+    } else {
+        $sql = "INSERT INTO storeowner(user_pwd, user_mail, user_phone, store_name, gst_no) VALUES (SHA('$pass'),'$email','$mobile','$name','$gst')";
+        $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        header('Location: login.php');
+        exit;
+    }
+}
 ?>
 <html>
     <head>
