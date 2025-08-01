@@ -5,6 +5,11 @@ $username = "root";
 $password = "";
 $database = "billsoftware";
 
+$servername = getenv('DB_SERVER');
+$username = getenv('DB_USERNAME');
+$password = getenv('DB_PASSWORD');
+$database = getenv('DB_DATABASE');
+
 // Create connection
 $conn = new mysqli($servername, $username, $password, $database);
 
